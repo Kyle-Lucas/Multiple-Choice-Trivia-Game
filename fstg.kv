@@ -4,22 +4,31 @@
 
 FloatLayout:
 
-    Button: # The Question
+    Label: # The Question
         halign: 'center'
-        text: app.Questions[0]
+        text: app.Questions[2]
         size_hint: .8,.1
         pos_hint: {'center_x': .5, 'top': .7}
 
     GridLayout: # The Options to choose from
         cols:1
         size_hint: .8,.4
+        spacing: 20
         pos_hint: {'center_x': .5, 'top': .5}
 
         Button:
-            text: app.Answers[0]
+            id: A
+            text: app.Answers2[0]
+            on_release: app.CheckAns(self)
         Button:
-            text: app.Answers[1]
+            id: B
+            text: app.Answers2[1]
+            on_release: app.CheckAns(self)
         Button:
-            text: app.Answers[2]
+            id: C
+            text: app.Answers2[2]
+            on_release: app.CheckAns(self)
         Button:
-            text: app.Answers[3]
+            id: D
+            text: app.Answers2[3]
+            on_release: app.CheckAns(self)
