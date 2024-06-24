@@ -1,0 +1,25 @@
+#:kivy 2.3.0
+
+<FloatLayout>:
+
+FloatLayout:
+
+    Button: # The Question
+        halign: 'center'
+        text: app.Questions[0]
+        size_hint: .8,.1
+        pos_hint: {'center_x': .5, 'top': .7}
+
+    GridLayout: # The Options to choose from
+        cols:1
+        size_hint: .8,.4
+        pos_hint: {'center_x': .5, 'top': .5}
+
+        Button:
+            text: app.Answers[0]
+        Button:
+            text: app.Answers[1]
+        Button:
+            text: app.Answers[2]
+        Button:
+            text: app.Answers[3]
