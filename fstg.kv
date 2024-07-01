@@ -4,9 +4,17 @@
 
 FloatLayout:
 
+    Button:
+        text: "Start"
+        on_release: app.LoadQue()
+        size_hint: .8,.1
+        pos_hint: {'center_x': .5, 'top': 1}
+
     Label: # The Question
+        id: que
         halign: 'center'
-        text: app.Questions[2]
+        text: 'N/A'
+        text_size: self.width, None
         size_hint: .8,.1
         pos_hint: {'center_x': .5, 'top': .7}
 
@@ -17,18 +25,18 @@ FloatLayout:
         pos_hint: {'center_x': .5, 'top': .5}
 
         Button:
-            id: A
-            text: app.Answers2[0]
+            id: opt0
+            text: 'N/A'
             on_release: app.CheckAns(self)
         Button:
-            id: B
-            text: app.Answers2[1]
+            id: opt1
+            text: 'N/A'
             on_release: app.CheckAns(self)
         Button:
-            id: C
-            text: app.Answers2[2]
+            id: opt2
+            text: 'N/A'
             on_release: app.CheckAns(self)
         Button:
-            id: D
-            text: app.Answers2[3]
+            id: opt3
+            text: 'N/A'
             on_release: app.CheckAns(self)
