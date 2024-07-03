@@ -1,10 +1,17 @@
 #:kivy 2.3.0
 
+<Button>:   # This is like a template/class for all Buttons below
+    background_normal: ''
+    background_color: (.2,.2,.2,.7)
+    halign: 'center'
+
+
 <FloatLayout>:
 
 FloatLayout:
 
-    Button:
+    Button: # Temp Button to Load a Question
+        id: temp
         text: "Start"
         on_release: app.LoadQue()
         size_hint: .8,.1
