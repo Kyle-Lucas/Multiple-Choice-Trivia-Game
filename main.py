@@ -6,7 +6,7 @@ import random
 
 Window.size = (480,860)
 
-class FSTG(App):
+class TriviaGame(App):
 
     Round = 0
     Score = 0
@@ -96,7 +96,7 @@ class FSTG(App):
         self.root.ids.opt3.background_color = .2,.2,.2,.7
 
 if __name__ == '__main__':
-    FSTG().run()
+    TriviaGame().run()
 
     
 
