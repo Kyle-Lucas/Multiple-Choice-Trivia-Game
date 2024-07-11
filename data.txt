@@ -1,8 +1,15 @@
+Fromsoftware SoulBorne Trivia Game
 
 In which game do you use the 'Coiled Sword Fragment' to respawn at last check point?
 Dark Souls 3
 Demons Souls
 Dark Souls 2
+Elden Ring
+
+In which game do you use the 'Aged Feather' to respawn at last check point?
+Dark Souls 2
+Dark Souls 3
+Demons Souls
 Elden Ring
 
 What is required before you are able to Fast Travel in Dark souls (1)?
@@ -11,8 +18,80 @@ Restore Humanity
 Defeat 4 Great Souls
 Defeat Ornstein and Smough
 
-What is the Name of the Onion Knight in Dark Souls 3?
+What is the Name of the 'Onion Knight' in Dark Souls 3?
 Siegmeyer of Catarina
 Siegward of Catarina
 Siegmayer of Catarina
 Sieglinde of Catarina
+
+Which Boss Gaurds the Entrance to 'Lyndell, The Royal Capital' in Elden Ring?
+Draconic Tree Sentinel
+Armoured Tree Sentinel
+Tree Sentinel
+Dragon Tree Sentinel
+
+At What Level Does the 'Deprived' Class Start?
+1
+5
+7
+10
+
+How Many Gargoyles are in the 'Belfry Gargoyles' Boss Fight in Dark Souls 2?
+6
+5
+4
+3
+
+In How Many Games can you Wield the 'Moonlight Greatsword'?
+6
+4
+5
+3
+
+In Which Castle do you Fight 'Godrick The Grafted' in Elden Ring?
+Stormveil Castle
+Stormviel Castle
+Castle of Storms
+Veiled Castle
+
+In Which Castle do you Fight 'Commander Niall' in Elden Ring?
+Castle Sol
+Castle Morne
+Redmane Castle 
+Shaded Castle
+
+Which Great Rune when Activated Raises your Maximum HP?
+Morgott's Great Rune
+Godrick's Great Rune
+Radagon's Great Rune
+Torrent's Great Rune
+
+What is the Name of the 'Onion Knight' in Dark Souls(1)?
+Siegward of Catarina
+Siegmeyer of Catarina
+Siegmayer of Catarina
+Sieglinde of Catarina
+
+What Ring does 'Great Grey Wolf Sif' Drop in Dark Souls(1)?
+Covenant of Artorius
+Abyss Walking Ring
+Abyss Ring
+Artorius Abyss Ring
+
+Which Boss Do you Fight in the 'Painted World of Ariamis'?
+Crossbreed Priscilla
+Dark Sun Gwyndolin
+Pinwheel
+Ornstein and Smough
+
+Which Boss's Soul is Used to get the 'Moonlight Greatsword' in Dark Souls 3?
+Oceiros, The Consumed King
+Nameless King
+Seath the Scaleless
+Ludwig, The Holy Blade
+
+What is the Name of the 'Blades of the Darkmoon' Covenant NPC in Dark Souls 3?
+Yorshka
+Yuria
+Yoel
+Yondor

@@ -8,17 +8,25 @@ Window.size = (480,860)
 
 class TriviaGame(App):
 
-    Round = 0
+    Data = open('Fromsoft-Trivia-Game/data.txt').readlines()
+
+    GameStart = False
     Score = 0
     
-    Data = open('Fromsoft-Trivia-Game/data.txt').readlines()
+    Questions = [] # Stores all the Questions Asked
     Question = None
     Options = []
     Answer = None
 
     Time = 0    # To Keep track of how long it took to answer aswell as a timer until next question loads in
     NotAnswered = True  # For Timer Functions 
-    PrevAns = None  # To ensure the Button changes back to normal in next Question
+
+    def nQuestions(self):   # Returns the number of Total Questions in Data.txt
+        n = 0
+        for q in range(0, len(self.Data)):
+            if self.Data[q] == '\n':
+                n += 1
+        return n
 
     # Interesting Bug i found with the kivy Clock.schedule_interval() function
     # If u dont unschedule it, it will just keep running
@@ -28,21 +36,22 @@ class TriviaGame(App):
 
     def QuestionTimer(self,dt):
         if self.NotAnswered == True:
-            self.root.ids.temp.text = str(round(self.Time)) # the round function works wonders here
+            self.root.ids.temp.text = f'TIME\n{round(self.Time) + 1}' # the round function works wonders here
             self.Time += dt
-            print(dt)
         else:
             Clock.unschedule(self.QuestionTimer) # Here i make sure this instance of the callback is unscheduled
 
     def LoadQue(self):
+        TriviaGame.GameStart = True
         self.Reset()
-        
+
         # While we havnt found a question, find a line in Data.txt that only has a /n
         # The Line following that /n will be our question
         while self.Question == None:
             RIndex = random.randint(0,len(self.Data) - 1)
-            if self.Data[RIndex] == '\n':
+            if self.Data[RIndex] == '\n' and self.Data[RIndex + 1] not in TriviaGame.Questions: #Check if we havent Asked this Questiom yet
                 self.Question = self.Data[RIndex + 1]
+                TriviaGame.Questions.append(self.Question)
                 self.root.ids.que.text = self.Question
 
         # The Answers will follow in the next 4 lines
@@ -54,6 +63,8 @@ class TriviaGame(App):
         self.Answer = self.Options[0]
         self.ShuffleOptions() # Quite Obvious
         self.UpdateTimer()  # Once the Question load in the Timer Starts
+
+        self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
 
     # Randomly place Options to choose from
     def ShuffleOptions(self):
@@ -70,15 +81,16 @@ class TriviaGame(App):
         
     # When an Answer is chosen
     def CheckAns(self, widget):
-        if self.NotAnswered == True:
+        if self.NotAnswered == True and TriviaGame.GameStart == True:
             self.NotAnswered = False
             if widget.text == self.Answer:  # Correctly Answered
+                TriviaGame.Score += (10 - round(self.Time))
                 widget.background_color = .2,1,.2,.6
             else:   # Wrong Answer
                 widget.background_color = 1,.2,.2,.6
 
-            self.PrevAns = widget.text  # To Remember which Button was pressed
-            self.root.ids.temp.text = f"It took you {int(self.Time)} seconds to answer"
+            self.root.ids.temp.text = f"It took you {round(self.Time)} seconds to answer"
+            self.root.ids.score.text = str(TriviaGame.Score)
 
 
     # Reset everything that was loaded from data.txt, timer and Button color that was changed

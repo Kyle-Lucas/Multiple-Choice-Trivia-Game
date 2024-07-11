@@ -17,10 +17,28 @@ FloatLayout:
         size_hint: .8,.1
         pos_hint: {'center_x': .5, 'top': 1}
 
+    GridLayout:
+        cols: 3
+        rows: 2
+        size_hint: .8, .1
+        pos_hint: {'center_x': .5, 'top': .9}
+
+        Label:
+            text: 'SCORE'
+        Label:
+        Label:
+            text: 'ROUND'
+        Label:
+            id: score
+        Label:
+        Label:
+            id: remain
+
+
     Label: # The Question
         id: que
         halign: 'center'
-        text: 'N/A'
+        text: 'Welcome to the Trivia Game\nPress The Start Button to Begin'
         text_size: self.width, None
         size_hint: .8,.1
         pos_hint: {'center_x': .5, 'top': .7}
@@ -33,17 +51,17 @@ FloatLayout:
 
         Button:
             id: opt0
-            text: 'N/A'
+            text: app.Data[0]
             on_release: app.CheckAns(self)
         Button:
             id: opt1
-            text: 'N/A'
+            text: 'Number of Questions Found in Data: '+str(app.nQuestions())
             on_release: app.CheckAns(self)
         Button:
             id: opt2
-            text: 'N/A'
+            text: 'Turn off Random Questions'
             on_release: app.CheckAns(self)
         Button:
             id: opt3
-            text: 'N/A'
+            text: 'Score: +10 if Correct \n-1 For every Second you take to answer'
             on_release: app.CheckAns(self)
