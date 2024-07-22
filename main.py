@@ -10,18 +10,20 @@ class TriviaGame(App):
 
     Data = open('Fromsoft-Trivia-Game/data.txt').readlines()
 
-    GameStart = False
-    Score = 0
+    GameStart: bool = False
+    Score: int = 0
+    RandomQuestions: bool = True
     
-    Questions = [] # Stores all the Questions Asked
-    Question = None
-    Options = []
-    Answer = None
+    Questions: list = [] # Stores all the Questions Asked
+    Question: str = None 
+    Options: list = []
+    Answer: str = None
 
-    Time = 0    # To Keep track of how long it took to answer aswell as a timer until next question loads in
-    NotAnswered = True  # For Timer Functions 
-
-    def nQuestions(self):   # Returns the number of Total Questions in Data.txt
+    Time: float = 0    # To Keep track of how long it took to answer aswell as a timer until next question loads in
+    NotAnswered: bool = True  # For Timer Functions 
+    
+    @classmethod
+    def nQuestions(self) -> int:   # Returns Total Questions in Data.txt
         n = 0
         for q in range(0, len(self.Data)):
             if self.Data[q] == '\n':
@@ -45,26 +47,57 @@ class TriviaGame(App):
         TriviaGame.GameStart = True
         self.Reset()
 
-        # While we havnt found a question, find a line in Data.txt that only has a /n
-        # The Line following that /n will be our question
-        while self.Question == None:
-            RIndex = random.randint(0,len(self.Data) - 1)
-            if self.Data[RIndex] == '\n' and self.Data[RIndex + 1] not in TriviaGame.Questions: #Check if we havent Asked this Questiom yet
-                self.Question = self.Data[RIndex + 1]
+        if TriviaGame.RandomQuestions == False:
+            if len(TriviaGame.Questions) == 0:
+                Line = 0
+                while self.Question == None:
+                    if self.Data[Line] == '\n':
+                        self.Question = self.Data[Line + 1]
+                        TriviaGame.Questions.append(self.Question)
+                        self.root.ids.que.text = self.Question
+                    else:
+                        Line += 1
+
+                for i in range(Line + 2,Line + 6):
+                    self.Options.append(self.Data[i])
+
+                self.Answer = self.Options[0]
+                self.ShuffleOptions() 
+                self.UpdateTimer()  
+                self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
+
+            else:
+                Line = self.Data.index(self.Questions[-1]) + 6
+                self.Question = self.Data[Line]
                 TriviaGame.Questions.append(self.Question)
                 self.root.ids.que.text = self.Question
 
-        # The Answers will follow in the next 4 lines
-        for i in range(RIndex + 2,RIndex + 6):
-            self.Options.append(self.Data[i])
+                for i in range(Line + 1,Line + 5):
+                    self.Options.append(self.Data[i])
 
-        # In Data.txt the first option after the question is the right answer
-        # Below will be randomly placed but Options[0] is the correct one
-        self.Answer = self.Options[0]
-        self.ShuffleOptions() # Quite Obvious
-        self.UpdateTimer()  # Once the Question load in the Timer Starts
+                self.Answer = self.Options[0]
+                self.ShuffleOptions() 
+                self.UpdateTimer()  
+                self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
 
-        self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
+        else:
+            while self.Question == None:
+                RIndex = random.randint(0,len(self.Data) - 1)
+                if self.Data[RIndex] == '\n' and self.Data[RIndex + 1] not in TriviaGame.Questions: #Check if we havent Asked this Questiom yet
+                    self.Question = self.Data[RIndex + 1]
+                    TriviaGame.Questions.append(self.Question)
+                    self.root.ids.que.text = self.Question
+    
+            # The Answers will follow in the next 4 lines
+            for i in range(RIndex + 2,RIndex + 6):
+                self.Options.append(self.Data[i])
+    
+            # In Data.txt the first option after the question is the right answer
+            # Below will be randomly placed but Options[0] is the correct one
+            self.Answer = self.Options[0]
+            self.ShuffleOptions()
+            self.UpdateTimer() 
+            self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
 
     # Randomly place Options to choose from
     def ShuffleOptions(self):
@@ -79,8 +112,8 @@ class TriviaGame(App):
         self.root.ids.opt2.text = Cache[2]
         self.root.ids.opt3.text = Cache[3]
         
-    # When an Answer is chosen
     def CheckAns(self, widget):
+        # When an Answer is chosen
         if self.NotAnswered == True and TriviaGame.GameStart == True:
             self.NotAnswered = False
             if widget.text == self.Answer:  # Correctly Answered
@@ -89,9 +122,24 @@ class TriviaGame(App):
             else:   # Wrong Answer
                 widget.background_color = 1,.2,.2,.6
 
-            self.root.ids.temp.text = f"It took you {round(self.Time)} seconds to answer"
+            self.root.ids.temp.text = f"It took you {round(self.Time)} seconds to answer\n Click Here to Load the Next Question"
             self.root.ids.score.text = str(TriviaGame.Score)
 
+        #When one of the Option Buttons are pressed before Starting the Game
+        if TriviaGame.GameStart == False:
+            self.Settings(widget.text)
+
+    def Settings(self,text):
+        if 'ON' in text:
+            TriviaGame.RandomQuestions = False
+            self.root.ids.opt2.text = 'Randomized Questions: OFF'
+            print(f'Randomized Questions: {TriviaGame.RandomQuestions}')
+        elif 'OFF' in text: 
+            TriviaGame.RandomQuestions = True
+            self.root.ids.opt2.text = 'Randomized Questions: ON'
+            print(f'Randomized Questions: {TriviaGame.RandomQuestions}')
+        elif 'Score' in text:
+            print(f'Change Score Setting/Difficulty')
 
     # Reset everything that was loaded from data.txt, timer and Button color that was changed
     def Reset(self):   

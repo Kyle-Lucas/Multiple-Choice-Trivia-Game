@@ -38,7 +38,7 @@ FloatLayout:
     Label: # The Question
         id: que
         halign: 'center'
-        text: 'Welcome to the Trivia Game\nPress The Start Button to Begin'
+        text: 'Welcome to the Customizable Trivia Game\nPress The Start Button to Begin'
         text_size: self.width, None
         size_hint: .8,.1
         pos_hint: {'center_x': .5, 'top': .7}
@@ -51,7 +51,7 @@ FloatLayout:
 
         Button:
             id: opt0
-            text: app.Data[0]
+            text: 'Data Loaded:\n' + app.Data[0]
             on_release: app.CheckAns(self)
         Button:
             id: opt1
@@ -59,7 +59,7 @@ FloatLayout:
             on_release: app.CheckAns(self)
         Button:
             id: opt2
-            text: 'Turn off Random Questions'
+            text: 'Randomized Questions: ON'
             on_release: app.CheckAns(self)
         Button:
             id: opt3
