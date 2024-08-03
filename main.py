@@ -12,6 +12,7 @@ class TriviaGame(App):
 
     GameStart: bool = False
     Score: int = 0
+    Score_Factor: int = 10
     RandomQuestions: bool = True
     
     Questions: list = [] # Stores all the Questions Asked
@@ -111,16 +112,27 @@ class TriviaGame(App):
         self.root.ids.opt1.text = Cache[1]
         self.root.ids.opt2.text = Cache[2]
         self.root.ids.opt3.text = Cache[3]
-        
+
+    def if_Wrong(self):
+        if self.root.ids.opt0.text == self.Answer:
+            self.root.ids.opt0.background_color = .2,1,.2,.6
+        if self.root.ids.opt1.text == self.Answer:
+            self.root.ids.opt1.background_color = .2,1,.2,.6
+        if self.root.ids.opt2.text == self.Answer:
+            self.root.ids.opt2.background_color = .2,1,.2,.6
+        if self.root.ids.opt3.text == self.Answer:
+            self.root.ids.opt3.background_color = .2,1,.2,.6
+
     def CheckAns(self, widget):
         # When an Answer is chosen
         if self.NotAnswered == True and TriviaGame.GameStart == True:
             self.NotAnswered = False
             if widget.text == self.Answer:  # Correctly Answered
-                TriviaGame.Score += (10 - round(self.Time))
+                TriviaGame.Score += (TriviaGame.Score_Factor - round(self.Time))
                 widget.background_color = .2,1,.2,.6
             else:   # Wrong Answer
                 widget.background_color = 1,.2,.2,.6
+                self.if_Wrong()
 
             self.root.ids.temp.text = f"It took you {round(self.Time)} seconds to answer\n Click Here to Load the Next Question"
             self.root.ids.score.text = str(TriviaGame.Score)
@@ -138,7 +150,13 @@ class TriviaGame(App):
             TriviaGame.RandomQuestions = True
             self.root.ids.opt2.text = 'Randomized Questions: ON'
             print(f'Randomized Questions: {TriviaGame.RandomQuestions}')
-        elif 'Score' in text:
+        elif '+10' in text:
+            TriviaGame.Score_Factor = 20
+            self.root.ids.opt3.text = 'Score: +20 if Correct \n-1 For every Second you take to Answer'
+            print(f'Change Score Setting/Difficulty')
+        elif '+20' in text:
+            TriviaGame.Score_Factor = 10
+            self.root.ids.opt3.text = 'Score: +10 if Correct \n-1 For every Second you take to Answer'
             print(f'Change Score Setting/Difficulty')
 
     # Reset everything that was loaded from data.txt, timer and Button color that was changed
