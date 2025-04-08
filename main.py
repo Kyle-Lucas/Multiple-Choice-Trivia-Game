@@ -176,9 +176,10 @@ class TriviaGame(App):
 if __name__ == '__main__':
     TriviaGame().run()
 
-    
+
 
     # Creating a venv and installing kivy (Debian)
     # python3 -m venv Name
     # source ./Name/bin/activate
     # python -m pip install kivy[base] kivy_examples
+    
