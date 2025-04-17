@@ -22,6 +22,7 @@ class TriviaGame(App):
 
     Time: float = 0    # To Keep track of how long it took to answer aswell as a timer until next question loads in
     NotAnswered: bool = True  # For Timer Functions 
+    WaitingForAnswer: bool = False
     
     @classmethod
     def nQuestions(self) -> int:   # Returns Total Questions in Data.txt
@@ -45,60 +46,68 @@ class TriviaGame(App):
             Clock.unschedule(self.QuestionTimer) # Here i make sure this instance of the callback is unscheduled
 
     def LoadQue(self):
-        TriviaGame.GameStart = True
-        self.Reset()
 
-        if TriviaGame.RandomQuestions == False:
-            if len(TriviaGame.Questions) == 0:
-                Line = 0
-                while self.Question == None:
-                    if self.Data[Line] == '\n':
-                        self.Question = self.Data[Line + 1]
-                        TriviaGame.Questions.append(self.Question)
-                        self.root.ids.que.text = self.Question
-                    else:
-                        Line += 1
+        if len(self.Questions) == TriviaGame.nQuestions(): # Check if all Questions were Asked
+            self.root.ids.temp.text = f' All Questions Anwered!\n Your Final Score: {TriviaGame.Score}'
 
-                for i in range(Line + 2,Line + 6):
-                    self.Options.append(self.Data[i])
+        elif TriviaGame.WaitingForAnswer == False:
+            TriviaGame.GameStart = True
+            self.Reset()
 
-                self.Answer = self.Options[0]
-                self.ShuffleOptions() 
-                self.UpdateTimer()  
-                self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
+            if TriviaGame.RandomQuestions == False:
+                if len(TriviaGame.Questions) == 0:
+                    Line = 0 # Incase Data.txt has no Title and starts with a blank Line
+                    while self.Question == None:
+                        if self.Data[Line] == '\n':
+                            self.Question = self.Data[Line + 1]
+                            TriviaGame.Questions.append(self.Question)
+                            self.root.ids.que.text = self.Question
+                        else:
+                            Line += 1
 
-            else:
-                Line = self.Data.index(self.Questions[-1]) + 6
-                self.Question = self.Data[Line]
-                TriviaGame.Questions.append(self.Question)
-                self.root.ids.que.text = self.Question
+                    for i in range(Line + 2,Line + 6):
+                        self.Options.append(self.Data[i])
 
-                for i in range(Line + 1,Line + 5):
-                    self.Options.append(self.Data[i])
+                    self.Answer = self.Options[0]
+                    self.ShuffleOptions() 
+                    self.UpdateTimer() 
+                    TriviaGame.WaitingForAnswer = True  
+                    self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
 
-                self.Answer = self.Options[0]
-                self.ShuffleOptions() 
-                self.UpdateTimer()  
-                self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
-
-        else:
-            while self.Question == None:
-                RIndex = random.randint(0,len(self.Data) - 1)
-                if self.Data[RIndex] == '\n' and self.Data[RIndex + 1] not in TriviaGame.Questions: #Check if we havent Asked this Questiom yet
-                    self.Question = self.Data[RIndex + 1]
+                else:
+                    Line = self.Data.index(self.Questions[-1]) + 6
+                    self.Question = self.Data[Line]
                     TriviaGame.Questions.append(self.Question)
                     self.root.ids.que.text = self.Question
-    
-            # The Answers will follow in the next 4 lines
-            for i in range(RIndex + 2,RIndex + 6):
-                self.Options.append(self.Data[i])
-    
-            # In Data.txt the first option after the question is the right answer
-            # Below will be randomly placed but Options[0] is the correct one
-            self.Answer = self.Options[0]
-            self.ShuffleOptions()
-            self.UpdateTimer() 
-            self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
+
+                    for i in range(Line + 1,Line + 5):
+                        self.Options.append(self.Data[i])
+
+                    self.Answer = self.Options[0]
+                    self.ShuffleOptions() 
+                    self.UpdateTimer() 
+                    TriviaGame.WaitingForAnswer = True  
+                    self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
+
+            elif TriviaGame.WaitingForAnswer == False : # if Randomized Questions is ON
+                while self.Question == None: # Lines 1,7,13,19... are where the questions will be typically located
+                    RIndex = random.randint(0,len(self.Data) - 1)
+                    if self.Data[RIndex] == '\n' and self.Data[RIndex + 1] not in TriviaGame.Questions: #Check if we havent Asked this Questiom yet
+                        self.Question = self.Data[RIndex + 1]
+                        TriviaGame.Questions.append(self.Question)
+                        self.root.ids.que.text = self.Question
+        
+                # The Answers will follow in the next 4 lines
+                for i in range(RIndex + 2,RIndex + 6):
+                    self.Options.append(self.Data[i])
+        
+                # In Data.txt the first option after the question is the right answer
+                # Below will be randomly placed but Options[0] is the correct one
+                self.Answer = self.Options[0]
+                self.ShuffleOptions()
+                self.UpdateTimer()
+                TriviaGame.WaitingForAnswer = True  
+                self.root.ids.remain.text = f'{len(self.Questions)}/{self.nQuestions()}'
 
     # Randomly place Options to choose from
     def ShuffleOptions(self):
@@ -127,6 +136,7 @@ class TriviaGame(App):
         # When an Answer is chosen
         if self.NotAnswered == True and TriviaGame.GameStart == True:
             self.NotAnswered = False
+            TriviaGame.WaitingForAnswer = False
             if widget.text == self.Answer:  # Correctly Answered
                 TriviaGame.Score += (TriviaGame.Score_Factor - round(self.Time))
                 widget.background_color = .2,1,.2,.6
@@ -176,9 +186,10 @@ class TriviaGame(App):
 if __name__ == '__main__':
     TriviaGame().run()
 
-    
+
 
     # Creating a venv and installing kivy (Debian)
     # python3 -m venv Name
     # source ./Name/bin/activate
     # python -m pip install kivy[base] kivy_examples
+    
